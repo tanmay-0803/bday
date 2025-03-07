@@ -125,7 +125,7 @@ P.S. If I were a cat, I’d totally curl up next to you right meow. 🐾❤️"<
                     if (heart.y + heart.size > player.y && heart.x > player.x && heart.x < player.x + player.width) {
                         score++;
                         hearts.splice(index, 1);
-                        if (score === 20) {
+                        if (score === 3) {
                             setTimeout(showCelebration, 100);
                         }
                     }
