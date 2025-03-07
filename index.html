@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday, Tanishq! 🎉</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0"></script>
+    <style>
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-r from-pink-400 to-purple-500 flex justify-center items-center min-h-screen text-white">
+    
+    <div id="mainContent" class="bg-white text-black p-6 rounded-2xl shadow-xl max-w-2xl w-full text-center">
+        <h1 class="text-4xl font-bold text-pink-500">Happy Birthday, Tanishq! 🎂</h1>
+        <p class="mt-4 text-lg">Wishing you a very happy birthday ! 💖</p>
+        
+        <!-- Images -->
+        <div class="mt-6 flex justify-center animate-float">
+            <img src="img1.png" alt="Birthday Celebration" class="w-64 h-72 object-cover object-center rounded-lg shadow-lg">
+        </div>
+        <div class="mt-4 flex justify-center space-x-4">
+            <img src="img2.png" alt="Small Decoration" class="w-20 h-20 rounded-full border-4 border-pink-400 shadow-md object-cover animate-float">
+            <img src="img3.png" alt="Another Decoration" class="w-20 h-20 rounded-full border-4 border-purple-400 shadow-md object-cover animate-float">
+        </div>
+        
+        <button id="celebrateBtn" class="mt-8 px-6 py-3 bg-pink-500 text-white font-bold rounded-full shadow-lg hover:bg-pink-600 transition">
+            Celebrate Now! 🎉
+        </button>
+    </div>
+
+    <!-- Popup Message -->
+    <div id="popup" class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center hidden">
+        <div class="bg-white p-6 rounded-lg shadow-xl text-center w-96">
+            <h2 class="text-2xl font-bold text-pink-500">"Meow-tastic Birthday Celebrations!🐾 Tanishq!"</h2>
+            <p class="mt-4 text-lg text-gray-700">You're amazing, and today is all about celebrating YOU! 💖🎉</p>
+            <button id="closePopup" class="mt-6 px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600">Start the Game! 🎮</button>
+        </div>
+    </div>
+
+    <!-- Heart Collecting Game -->
+    <canvas id="gameCanvas" class="hidden bg-white border-4 border-pink-500"></canvas>
+    
+    <script>
+        document.getElementById("celebrateBtn").addEventListener("click", function() {
+            confetti({ particleCount: 200, spread: 180 });
+            document.getElementById("popup").classList.remove("hidden");
+        });
+    
+        document.getElementById("closePopup").addEventListener("click", function() {
+            document.getElementById("popup").classList.add("hidden");
+            document.getElementById("mainContent").classList.add("hidden");
+            document.getElementById("gameCanvas").classList.remove("hidden");
+            startGame();
+        });
+    
+        let birthdaySong = new Audio("birthday_song.mp3"); // Add your birthday song file
+    
+        function startGame() {
+            const canvas = document.getElementById("gameCanvas");
+            const ctx = canvas.getContext("2d");
+            canvas.width = 400;
+            canvas.height = 500;
+            
+            let hearts = [];
+            let score = 0;
+            let player = { x: 160, y: 450, width: 80, height: 40 };
+    
+            function createHeart() {
+                hearts.push({ x: Math.random() * 360, y: 0, size: 20, speed: 2 + Math.random() * 3 });
+            }
+            setInterval(createHeart, 1000);
+    
+            function movePlayer(event) {
+                if (event.key === "ArrowLeft" && player.x > 0) player.x -= 20;
+                if (event.key === "ArrowRight" && player.x < 320) player.x += 20;
+            }
+            window.addEventListener("keydown", movePlayer);
+    
+            function drawHeart(ctx, x, y, size) {
+                ctx.fillStyle = "red";
+                ctx.beginPath();
+                ctx.moveTo(x, y + size / 4);
+                ctx.bezierCurveTo(x - size / 2, y - size / 2, x - size, y + size / 3, x, y + size);
+                ctx.bezierCurveTo(x + size, y + size / 3, x + size / 2, y - size / 2, x, y + size / 4);
+                ctx.fill();
+            }
+    
+            function showCelebration() {
+                birthdaySong.play();
+                confetti({ particleCount: 300, spread: 360 });
+                document.body.innerHTML = `
+                    <div class="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-yellow-300 to-red-400 text-white text-center">
+                        <h1 class="text-5xl font-bold">🎉 Happy 20th Birthday, Tanishq! 🎂</h1>
+                        <p class="mt-4 text-2xl">You're the cutest person this world would ever see! Enjoy your special day! 💖
+                            Happy birthday from coco milky deggu and (some special onces you know)
+                            "To the sweetest cat whisperer I know, 🐱💖
+
+Roses may not be your thing, but who needs them when we can have crispy and spicy pani puri? 🌮✨ If love had a flavor, I’m pretty sure it would taste like that first bite of a perfectly filled puri! 😋💛
+
+May your days be as joyful as a cat discovering a new box and as satisfying as a plate of unlimited panipuri! 😻💫
+
+P.S. If I were a cat, I’d totally curl up next to you right meow. 🐾❤️"</p>
+                        <img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExYzlibnNqOW5lbTE4ZndocjF1eXVrMDlmdnNleXNwd2hod2h3N2RxNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3oriO0OEd9QIDdllqo/giphy.gif" alt="Gift Animation" class="mt-6 w-40 h-40">
+                        <button onclick="location.reload()" class="mt-8 px-6 py-3 bg-blue-500 text-white font-bold rounded-full shadow-lg hover:bg-blue-600 transition">
+                            Wanna revisit again! 🔄
+                        </button>
+                    </div>
+                `;
+            }
+    
+            function updateGame() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+                hearts.forEach((heart, index) => {
+                    drawHeart(ctx, heart.x, heart.y, heart.size);
+                    heart.y += heart.speed;
+    
+                    if (heart.y > canvas.height) hearts.splice(index, 1);
+                    if (heart.y + heart.size > player.y && heart.x > player.x && heart.x < player.x + player.width) {
+                        score++;
+                        hearts.splice(index, 1);
+                        if (score === 20) {
+                            setTimeout(showCelebration, 100);
+                        }
+                    }
+                });
+    
+                ctx.fillStyle = "brown";
+                ctx.fillRect(player.x, player.y, player.width, player.height);
+    
+                ctx.fillStyle = "black";
+                ctx.fillText("Score: " + score, 10, 20);
+                requestAnimationFrame(updateGame);
+            }
+            updateGame();
+        }
+    </script>
+    
